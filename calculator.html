@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <title>HTML Practice</title>
+  <!DOCTYPE html>
+<html>
+  <head>
+    <title>HTML Practice</title>
+  </head>
+
+  <style>
+    .container {
+      display: grid;
+      justify-content: center;
+      grid-template-columns: 80px 80px 80px 80px;
+      grid-template-rows: 80px 80px;
+      grid-template-areas: 
+      "header header header header" 
+      "main main main main" 
+      "main main main main" 
+      "main main main main" 
+      "main main main main";
+    }
+    .item-header {
+        grid-area: header;
+        grid-row-start: 1;
+        grid-row-end: 1;
+        background-color: black;
+        color: white;
+        text-align: right;
+        font-size: 70px;
+    }
+    .btn {
+      background-color: dimgray;
+      border: none;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      margin: 4px 2px;
+      border-radius: 50%;
+    }
+    .silver {
+      background-color: silver;
+      color: black;
+    }
+    .orange {
+      background-color: orange;
+    }
+    button {
+      font-size: 26px;
+    }
+    button:active {
+      background-color:rgb(207, 24, 24);
+      transform: translateY(4px);
+    }
+
+  
+  </style>
+
+  <div class="container">
+      <div class="item item-header" id="screen">0</div>
+      
+        <button class="btn silver" id="clearAll">AC</button>
+        <button class="btn silver" id="changeSign">+/-</button>
+        <button class="btn silver" id="percent">%</button>
+        <button class="btn orange" id="divide">÷</button>
+      
+        <button class="btn" id="7">7</button>
+        <button class="btn" id="8">8</button>
+        <button class="btn" id="9">9</button>
+        <button class="btn orange" id="times">X</button>
+      
+        <button class="btn" id="4">4</button>
+        <button class="btn" id="5">5</button>
+        <button class="btn" id="6">6</button>
+        <button class="btn orange" id="minus">-</button>
+      
+        <button class="btn" id="1">1</button>
+        <button class="btn" id="2">2</button>
+        <button class="btn" id="3">3</button>
+        <button class="btn orange" id="plus">+</button>
+      
+        <button class="btn" id="root">√</button>
+        <button class="btn" id="0">0</button>
+        <button class="btn">.</button>
+        <button class="btn orange" id="equals">=</button>
+      
+    </div>
+  
+    
+  
+
+  <script>
+    (function (){
+      const digit   = []
+      var numCheck  = 1
+      var signCheck = 0
+      var storage   = 0
+      
+      document.getElementById("1").addEventListener("click", function() {getNumber(1)});
+      document.getElementById("2").addEventListener("click", function() {getNumber(2)});
+      document.getElementById("3").addEventListener("click", function() {getNumber(3)});
+      document.getElementById("4").addEventListener("click", function() {getNumber(4)});
+      document.getElementById("5").addEventListener("click", function() {getNumber(5)});
+      document.getElementById("6").addEventListener("click", function() {getNumber(6)});
+      document.getElementById("7").addEventListener("click", function() {getNumber(7)});
+      document.getElementById("8").addEventListener("click", function() {getNumber(8)});
+      document.getElementById("9").addEventListener("click", function() {getNumber(9)});
+      document.getElementById("0").addEventListener("click", function() {getNumber(0)});
+
+      document.getElementById("clearAll").addEventListener("click", function() {clearAll()});
+      document.getElementById("root").addEventListener("click", function() {squareRoot()});
+      document.getElementById("times").addEventListener("click", function() {multiplier()});
+      document.getElementById("divide").addEventListener("click", function() {divider()});
+      document.getElementById("minus").addEventListener("click", function() {subtractor()});
+      document.getElementById("plus").addEventListener("click", function() {adder()});
+      document.getElementById("changeSign").addEventListener("click", function() {changeSign()});
+
+
+      document.getElementById("equals").addEventListener("click", function() {equals()});
+
+
+      function getNumber(number) {
+        if (digit.length < 8) {
+          if (numCheck==1) {
+            digit.splice(digit.length,0, number)
+            document.getElementById("screen").innerHTML = digit.join('')
+            console.log("the current numer is " +digit)
+            console.log("the stored value is " + storage)
+          }
+          else {
+           
+            numCheck=1
+            digit.splice(0,digit.length, number)
+            document.getElementById("screen").innerHTML = digit.join('') 
+          }
+        }
+        else {
+          console.log("maximum number of digits on screen")
+        }
+      }
+      
+
+      function clearAll(){
+        console.log('everything was cleared.')
+        digit.splice(0,digit.length,0)
+        document.getElementById("screen").innerHTML = digit.join('')
+        signCheck = 0
+        storage   = 0
+        numCheck  = 0
+      }
+
+      function squareRoot(){
+       var value = parseFloat(digit.join('')**0.5)
+        
+        document.getElementById("screen").innerHTML = value
+        digit.splice(0,digit.length, value)
+        numCheck=0
+      }
+
+      function changeSign(){
+        digit.splice(digit.length,0,"-")
+      }
+
+
+      //Operators function based on the value of signCheck. 1=add, 2=subtract, 3=divide, 4=multiply
+      function multiplier() {
+        if (signCheck<1) {
+          storage = parseFloat(digit.join(''))
+          console.log("the stored value is " + storage)
+          signCheck = 4
+          numCheck  = 0
+        }
+        else {
+          equals()
+          signCheck = 4
+          numCheck  = 0        }
+      }
+
+      function divider() {
+        if (signCheck<1) {
+          storage = parseFloat(digit.join(''))
+          console.log("the stored value is " + storage)
+          signCheck = 3
+          numCheck  = 0
+        }
+        else {
+          equals()
+          signCheck = 3
+          numCheck  = 0
+        }
+      }
+
+      function subtractor() {
+        if (signCheck<1) {
+          storage = parseFloat(digit.join(''))
+          console.log("the stored value is " + storage)
+          signCheck = 2
+          numCheck  = 0
+        }
+        else {
+          equals()
+          signCheck = 2
+          numCheck  = 0
+        }
+      }
+
+      function adder() {
+        if (signCheck<1) {
+          signCheck = 1
+          storage = parseFloat(digit.join(''))
+          console.log("the stored value is " + storage)
+          
+          numCheck  = 0
+        }
+        else {
+          equals()
+          signCheck = 1
+          numCheck  = 0
+          
+        }
+      }
+
+      function equals(){
+        var value = parseFloat(digit.join(''))
+          if(signCheck==4) {
+           var result = storage * value
+            console.log(storage + " x " + value + " = " + result)
+            document.getElementById("screen").innerHTML = result
+            storage   = result
+            console.log ("the stored value is now " + storage)
+          }
+          
+          if(signCheck==3) {
+            var result = storage / value
+            console.log(storage + " / " + value + " = " + result)
+            document.getElementById("screen").innerHTML = result
+            storage   = result
+            console.log ("the stored value is now " + storage)
+          }
+
+          if(signCheck==2) {
+          var result = storage - value
+            console.log(storage + " - " + value + " = " + result)
+            document.getElementById("screen").innerHTML = result
+            storage   = result
+            console.log ("the stored value is now " + storage)
+          }
+
+          if(signCheck==1) {
+          var result = storage + value
+            console.log(storage + " + " + value + " = " + result)
+            document.getElementById("screen").innerHTML = result
+            storage   = result
+            console.log ("the stored value is now " + storage)
+          }
+        signCheck = 0
+        numCheck  = 0
+        digit.splice(0, digit.length, result)
+
+      }
+    })();
+
+  </script>
+
+  <body></body>
+
+</html>
