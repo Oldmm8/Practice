@@ -1,12 +1,9 @@
 <!DOCTYPE html>
-<html>
-<head>
 
-  <title>HTML Practice</title>
-  <!DOCTYPE html>
 <html>
   <head>
     <title>HTML Practice</title>
+    <meta charset="UTF-8"> 
   </head>
 
   <style>
@@ -54,11 +51,10 @@
       background-color:rgb(207, 24, 24);
       transform: translateY(4px);
     }
-
-  
   </style>
 
-  <div class="container">
+  <body>
+    <div class="container">
       <div class="item item-header" id="screen">0.00</div>
       
         <button class="btn silver"  id="clearAll">  AC</button>
@@ -70,209 +66,119 @@
         <button class="btn"         id="8">         8</button>
         <button class="btn"         id="9">         9</button>
         <button class="btn orange"  id="times">     X</button>
-      
+
         <button class="btn"         id="4">         4</button>
         <button class="btn"         id="5">         5</button>
         <button class="btn"         id="6">         6</button>
         <button class="btn orange"  id="minus">     -</button>
-      
+
         <button class="btn"         id="1">         1</button>
         <button class="btn"         id="2">         2</button>
         <button class="btn"         id="3">         3</button>
         <button class="btn orange"  id="plus">      +</button>
-      
+
         <button class="btn"         id="root">      √</button>
         <button class="btn"         id="0">         0</button>
         <button class="btn"         id="decimal">   .</button>
         <button class="btn orange"  id="equals">    =</button>
-      
     </div>
-  
-    
-  
+  </body>
 
   <script>
-    (function (){
-      const digit   = []
-      var numCheck  = 1
-      var signCheck = 0
+      var digit   = []
       var storage   = 0
-
-
-      document.getElementById("1").addEventListener("click", function() {getNumber(1)});
-      document.getElementById("2").addEventListener("click", function() {getNumber(2)});
-      document.getElementById("3").addEventListener("click", function() {getNumber(3)});
-      document.getElementById("4").addEventListener("click", function() {getNumber(4)});
-      document.getElementById("5").addEventListener("click", function() {getNumber(5)});
-      document.getElementById("6").addEventListener("click", function() {getNumber(6)});
-      document.getElementById("7").addEventListener("click", function() {getNumber(7)});
-      document.getElementById("8").addEventListener("click", function() {getNumber(8)});
-      document.getElementById("9").addEventListener("click", function() {getNumber(9)});
-      document.getElementById("0").addEventListener("click", function() {getNumber(0)});
-
-      document.getElementById("clearAll").addEventListener("click", function() {clearAll()});
-      document.getElementById("root").addEventListener("click", function() {squareRoot()});
-      document.getElementById("times").addEventListener("click", function() {multiplier()});
-      document.getElementById("divide").addEventListener("click", function() {divider()});
-      document.getElementById("minus").addEventListener("click", function() {subtractor()});
-      document.getElementById("plus").addEventListener("click", function() {adder()});
-      document.getElementById("changeSign").addEventListener("click", function() {changeSign()});
-      document.getElementById("decimal").addEventListener("click", function() {decimal()});
-
-
-      document.getElementById("equals").addEventListener("click", function() {equals()});
-
-
-      function getNumber(number) {
+      var operation = ""
+  
+      function updateDigit(newNumber) {
         if (digit.length < 8) {
-          if (numCheck==1) {
-            digit.splice(digit.length,0, number)
-            document.getElementById("screen").innerHTML = digit.join('')
-            console.log("the current numer is " +digit)
-            console.log("the stored value is " + storage)
-          }
-          else {
-           
-            numCheck=1
-            digit.splice(0,digit.length, number)
-            document.getElementById("screen").innerHTML = digit.join('') 
-          }
+          digit.push(parseFloat(newNumber));
+          document.getElementById("screen").innerHTML = digit.join('');
         }
-        else {
-          console.log("maximum number of digits on screen")
-        }
+  
+        else {console.log("maximum number of digits on screen")}
       }
       
-
-      function clearAll(){
-        console.log('everything was cleared.')
-        digit.splice(0,digit.length,0)
-        document.getElementById("screen").innerHTML = digit.join('')
-        signCheck = 0
-        storage   = 0
-        numCheck  = 0
+      function getDigit() {
+        return parseFloat(digit.join(""));
       }
-
-      function squareRoot(){
-       var value = parseFloat(digit.join('')**0.5)
-       var val   = value.toFixed(2)
+  
+      function clearAll() {
+        clearDigit();
+        storage = null;
+      }
+  
+      function clearDigit() {
+        digit = [];
+        document.getElementById("screen").innerHTML = "";
+      }
+  
+      function requestOperation(operation) {
+          storage = parseFloat(digit.join(''));
+          clearDigit();
+          setNextOperation(operation);
+      }
+  
+      function setNextOperation(nextOperation) {
+        operation = nextOperation
+        console.log("Next operation will be " + operation + " on " + storage)
+      }
+  
+      function evaluate() {
+        console.log("Performing " + operation + " on " + storage + " and " + digit);
         
-        document.getElementById("screen").innerHTML = val
-        digit.splice(0,digit.length, val)
-        numCheck=0
-      }
-
-      function changeSign(){
-        storage = parseFloat((digit.join(''))*-1)
-        digit.splice(0, digit.length, storage)
-        document.getElementById("screen").innerHTML = storage
-      }
-
-      function decimal(){
-    
-        
-      }
-
-
-      //Operators function based on the value of signCheck. 1=add, 2=subtract, 3=divide, 4=multiply
-      function multiplier() {
-        if (signCheck<1) {
-          storage = parseFloat(digit.join(''))
-          console.log("the stored value is " + storage)
-          signCheck = 4
-          numCheck  = 0
-        }
-        else {
-          equals()
-          signCheck = 4
-          numCheck  = 0        
-        }
-      }
-
-      function divider() {
-        if (signCheck<1) {
-          storage = parseFloat(digit.join(''))
-          console.log("the stored value is " + storage)
-          signCheck = 3
-          numCheck  = 0
-        }
-        else {
-          equals()
-          signCheck = 3
-          numCheck  = 0
-        }
-      }
-
-      function subtractor() {
-        if (signCheck<1) {
-          storage = parseFloat(digit.join(''))
-          console.log("the stored value is " + storage)
-          signCheck = 2
-          numCheck  = 0
-        }
-        else {
-          equals()
-          signCheck = 2
-          numCheck  = 0
-        }
-      }
-
-      function adder() {
-        if (signCheck<1) {
-          signCheck = 1
-          storage = parseFloat(digit.join(''))
-          console.log("the stored value is " + storage)         
-          numCheck  = 0
-        }
-        else {
-          equals()
-          signCheck = 1
-          numCheck  = 0          
-        }
-      }
-
-      function equals(){
-        var val = parseFloat(digit.join(''))
-        var value   = val
-
-          if(signCheck==4) {
-           var result = storage * value
-           console.log(storage + " x " + value + " = " + result)           
-           storage    = result
-           console.log ("the stored value is now " + storage)
-          }
+        a = storage;
+        b = getDigit();
+  
+        clearDigit()
+  
+        switch (operation) {
+          case "add":
+            updateDigit(a + b);
+            break;
+  
+          case "subtract":
+            updateDigit(a - b);
+            break;
           
-          if(signCheck==3) {
-           var result = storage / value
-           console.log(storage + " / " + value + " = " + result)          
-           storage    = result
-           console.log ("the stored value is now " + storage)
-          }
-
-          if(signCheck==2) {
-           var result = storage - value
-           console.log(storage + " - " + value + " = " + result)           
-           storage    = result
-           console.log ("the stored value is now " + storage)
-          }
-
-          if(signCheck==1) {
-           var result = storage + value
-           console.log(storage + " + " + value + " = " + result)
-           storage    = result
-           console.log ("the stored value is now " + storage)
-          }
-        signCheck = 0
-        numCheck  = 0
-        
-        digit.splice(0, digit.length, result)
-        document.getElementById("screen").innerHTML = result.toFixed(2)
-
+          case "multiply":
+            updateDigit(a * b);
+            break;
+          
+          case "divide":
+            updateDigit(a / b);
+            break;
+  
+          case "":
+            console.log("No operation was previously requested");
+  
+          default:
+            console.log("I don't know how to " + operation);
+        }
       }
-    })();
-
+  
+      (function (){
+        document.getElementById("1").addEventListener("click", function() {updateDigit(1)});
+        document.getElementById("2").addEventListener("click", function() {updateDigit(2)});
+        document.getElementById("3").addEventListener("click", function() {updateDigit(3)});
+        document.getElementById("4").addEventListener("click", function() {updateDigit(4)});
+        document.getElementById("5").addEventListener("click", function() {updateDigit(5)});
+        document.getElementById("6").addEventListener("click", function() {updateDigit(6)});
+        document.getElementById("7").addEventListener("click", function() {updateDigit(7)});
+        document.getElementById("8").addEventListener("click", function() {updateDigit(8)});
+        document.getElementById("9").addEventListener("click", function() {updateDigit(9)});
+        document.getElementById("0").addEventListener("click", function() {updateDigit(0)});
+  
+        document.getElementById("root").addEventListener("click", function() {requestOperation("sqr")});
+        document.getElementById("times").addEventListener("click", function() {requestOperation("multiply")});
+        document.getElementById("divide").addEventListener("click", function() {requestOperation("divide")});
+        document.getElementById("minus").addEventListener("click", function() {requestOperation("subtract")});
+        document.getElementById("plus").addEventListener("click", function() {requestOperation("add")});
+        document.getElementById("changeSign").addEventListener("click", function() {changeSign()});
+        document.getElementById("decimal").addEventListener("click", function() {decimal()});
+  
+        document.getElementById("equals").addEventListener("click", function() {evaluate()});
+        document.getElementById("clearAll").addEventListener("click", function() {clearAll()});
+      })();
+  
   </script>
-
-  <body></body>
-
 </html>
