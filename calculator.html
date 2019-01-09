@@ -59,32 +59,32 @@
   </style>
 
   <div class="container">
-      <div class="item item-header" id="screen">0</div>
+      <div class="item item-header" id="screen">0.00</div>
       
-        <button class="btn silver" id="clearAll">AC</button>
-        <button class="btn silver" id="changeSign">+/-</button>
-        <button class="btn silver" id="percent">%</button>
-        <button class="btn orange" id="divide">÷</button>
+        <button class="btn silver"  id="clearAll">  AC</button>
+        <button class="btn silver"  id="changeSign">+/-</button>
+        <button class="btn silver"  id="percent">   %</button>
+        <button class="btn orange"  id="divide">    ÷</button>
       
-        <button class="btn" id="7">7</button>
-        <button class="btn" id="8">8</button>
-        <button class="btn" id="9">9</button>
-        <button class="btn orange" id="times">X</button>
+        <button class="btn"         id="7">         7</button>
+        <button class="btn"         id="8">         8</button>
+        <button class="btn"         id="9">         9</button>
+        <button class="btn orange"  id="times">     X</button>
       
-        <button class="btn" id="4">4</button>
-        <button class="btn" id="5">5</button>
-        <button class="btn" id="6">6</button>
-        <button class="btn orange" id="minus">-</button>
+        <button class="btn"         id="4">         4</button>
+        <button class="btn"         id="5">         5</button>
+        <button class="btn"         id="6">         6</button>
+        <button class="btn orange"  id="minus">     -</button>
       
-        <button class="btn" id="1">1</button>
-        <button class="btn" id="2">2</button>
-        <button class="btn" id="3">3</button>
-        <button class="btn orange" id="plus">+</button>
+        <button class="btn"         id="1">         1</button>
+        <button class="btn"         id="2">         2</button>
+        <button class="btn"         id="3">         3</button>
+        <button class="btn orange"  id="plus">      +</button>
       
-        <button class="btn" id="root">√</button>
-        <button class="btn" id="0">0</button>
-        <button class="btn">.</button>
-        <button class="btn orange" id="equals">=</button>
+        <button class="btn"         id="root">      √</button>
+        <button class="btn"         id="0">         0</button>
+        <button class="btn"         id="decimal">   .</button>
+        <button class="btn orange"  id="equals">    =</button>
       
     </div>
   
@@ -97,7 +97,8 @@
       var numCheck  = 1
       var signCheck = 0
       var storage   = 0
-      
+
+
       document.getElementById("1").addEventListener("click", function() {getNumber(1)});
       document.getElementById("2").addEventListener("click", function() {getNumber(2)});
       document.getElementById("3").addEventListener("click", function() {getNumber(3)});
@@ -116,6 +117,7 @@
       document.getElementById("minus").addEventListener("click", function() {subtractor()});
       document.getElementById("plus").addEventListener("click", function() {adder()});
       document.getElementById("changeSign").addEventListener("click", function() {changeSign()});
+      document.getElementById("decimal").addEventListener("click", function() {decimal()});
 
 
       document.getElementById("equals").addEventListener("click", function() {equals()});
@@ -153,14 +155,22 @@
 
       function squareRoot(){
        var value = parseFloat(digit.join('')**0.5)
+       var val   = value.toFixed(2)
         
-        document.getElementById("screen").innerHTML = value
-        digit.splice(0,digit.length, value)
+        document.getElementById("screen").innerHTML = val
+        digit.splice(0,digit.length, val)
         numCheck=0
       }
 
       function changeSign(){
-        digit.splice(digit.length,0,"-")
+        storage = parseFloat((digit.join(''))*-1)
+        digit.splice(0, digit.length, storage)
+        document.getElementById("screen").innerHTML = storage
+      }
+
+      function decimal(){
+    
+        
       }
 
 
@@ -175,7 +185,8 @@
         else {
           equals()
           signCheck = 4
-          numCheck  = 0        }
+          numCheck  = 0        
+        }
       }
 
       function divider() {
@@ -210,54 +221,52 @@
         if (signCheck<1) {
           signCheck = 1
           storage = parseFloat(digit.join(''))
-          console.log("the stored value is " + storage)
-          
+          console.log("the stored value is " + storage)         
           numCheck  = 0
         }
         else {
           equals()
           signCheck = 1
-          numCheck  = 0
-          
+          numCheck  = 0          
         }
       }
 
       function equals(){
-        var value = parseFloat(digit.join(''))
+        var val = parseFloat(digit.join(''))
+        var value   = val
+
           if(signCheck==4) {
            var result = storage * value
-            console.log(storage + " x " + value + " = " + result)
-            document.getElementById("screen").innerHTML = result
-            storage   = result
-            console.log ("the stored value is now " + storage)
+           console.log(storage + " x " + value + " = " + result)           
+           storage    = result
+           console.log ("the stored value is now " + storage)
           }
           
           if(signCheck==3) {
-            var result = storage / value
-            console.log(storage + " / " + value + " = " + result)
-            document.getElementById("screen").innerHTML = result
-            storage   = result
-            console.log ("the stored value is now " + storage)
+           var result = storage / value
+           console.log(storage + " / " + value + " = " + result)          
+           storage    = result
+           console.log ("the stored value is now " + storage)
           }
 
           if(signCheck==2) {
-          var result = storage - value
-            console.log(storage + " - " + value + " = " + result)
-            document.getElementById("screen").innerHTML = result
-            storage   = result
-            console.log ("the stored value is now " + storage)
+           var result = storage - value
+           console.log(storage + " - " + value + " = " + result)           
+           storage    = result
+           console.log ("the stored value is now " + storage)
           }
 
           if(signCheck==1) {
-          var result = storage + value
-            console.log(storage + " + " + value + " = " + result)
-            document.getElementById("screen").innerHTML = result
-            storage   = result
-            console.log ("the stored value is now " + storage)
+           var result = storage + value
+           console.log(storage + " + " + value + " = " + result)
+           storage    = result
+           console.log ("the stored value is now " + storage)
           }
         signCheck = 0
         numCheck  = 0
+        
         digit.splice(0, digit.length, result)
+        document.getElementById("screen").innerHTML = result.toFixed(2)
 
       }
     })();
