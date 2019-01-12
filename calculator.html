@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="UTF-8">
     <title>HTML Practice</title>
   </head>
 
@@ -50,8 +51,9 @@
       transform: translateY(4px);
     }
   </style>
-  <body>
-  <div class="container">
+
+  <body onload="attach_handlers()">
+    <div class="container">
       <div class="item item-header" id="screen">0.00</div>
       <button class="btn silver"  id="clearAll">  AC</button>
       <button class="btn silver"  id="changeSign">+/-</button>
@@ -81,12 +83,163 @@
   </body>
 
   <script>
-    (function (){
-      const digit   = []
-      var numCheck  = 1
-      var signCheck = 0
-      var storage   = 0
-      var doubleOperator = 0
+    // Global state trackers
+    const digit   = []
+    var numCheck  = 1
+    var signCheck = 0
+    var storage   = 0
+    var doubleOperator = 0
+
+    function getNumber(number) {
+      if (digit.length < 8) {
+        if (numCheck==1) {
+          digit.splice(digit.length,0, number)
+          document.getElementById("screen").innerHTML = digit.join('')
+          console.log("the current numer is " +digit)
+          console.log("the stored value is " + storage)
+        }
+        else {
+          numCheck=1
+          digit.splice(0,digit.length, number)
+          document.getElementById("screen").innerHTML = digit.join('') 
+        }
+      }
+      else {
+        console.log("maximum number of digits on screen")
+      }
+    }
+
+    function clearAll(){
+      console.log('everything was cleared.')
+      digit.splice(0,digit.length,0)
+      document.getElementById("screen").innerHTML = digit.join('')
+      signCheck = 0
+      storage   = 0
+      numCheck  = 0
+    }
+
+    function squareRoot(){
+      var value = parseFloat(digit.join('')**0.5)
+      var val   = value.toFixed(2)
+      
+      document.getElementById("screen").innerHTML = val
+      digit.splice(0,digit.length, val)
+      numCheck=0
+    }
+
+    function changeSign(){
+      storage = parseFloat((digit.join(''))*-1)
+      digit.splice(0, digit.length, storage)
+      document.getElementById("screen").innerHTML = storage
+    }
+
+    function decimal(){
+      }
+
+
+    //Operators function based on the value of signCheck. 1=add, 2=subtract, 3=divide, 4=multiply
+    function multiplier() {
+      if (signCheck<1) {
+        storage = parseFloat(digit.join(''))
+        console.log("the stored value is " + storage)
+        signCheck = 4
+        numCheck  = 0
+      }
+    }
+
+    function divider() {
+      if (signCheck<1) {
+        storage = parseFloat(digit.join(''))
+        console.log("the stored value is " + storage)
+        signCheck = 3
+        numCheck  = 0
+      }
+      else {
+        equals()
+        signCheck = 3
+        numCheck  = 0
+      }
+    }
+
+    function subtractor() {
+      if (signCheck<1) {
+        storage = parseFloat(digit.join(''))
+        console.log("the stored value is " + storage)
+        signCheck = 2
+        numCheck  = 0
+      }
+      else {
+        equals()
+        signCheck = 2
+        numCheck  = 0
+      }
+    }
+
+    function adder() {
+      if (signCheck<1) {
+        signCheck = 1
+        storage = parseFloat(digit.join(''))
+        console.log("the stored value is " + storage)
+        numCheck  = 0
+      }
+      else {
+        equals()
+        signCheck = 1
+        numCheck  = 0
+      }
+    }
+      
+    function equals(){
+      var val = parseFloat(digit.join(''))
+      var value   = val
+
+      if(signCheck==4) {
+        var result = storage * value
+        console.log(storage + " x " + value + " = " + result)           
+        storage    = result
+        console.log ("the stored value is now " + storage)
+      }
+
+      if(signCheck==3) {
+        if(value!=0){
+        var result = storage / value
+        console.log(storage + " / " + value + " = " + result)          
+        storage    = result
+        console.log ("the stored value is now " + storage)
+        }
+        else{
+          console.log("can't divide by 0!")
+        }
+      }
+
+      if(signCheck==2) {
+        var result = storage - value
+        console.log(storage + " - " + value + " = " + result)
+        storage = result
+        console.log ("the stored value is now " + storage)
+      }
+
+      if(signCheck==1) {
+        var result = storage + value
+        console.log(storage + " + " + value + " = " + result)
+        storage    = result
+        console.log ("the stored value is now " + storage)
+      }
+
+      if(result!==undefined){
+        signCheck = 0
+        numCheck  = 0
+        digit.splice(0, digit.length, result)
+        document.getElementById("screen").innerHTML = result.toFixed(2)
+      }
+
+      else{
+        console.log("undefined.")
+      }
+    }
+
+    function attach_handlers() {
+      console.log("Attaching event listeners...")
       document.getElementById("1").addEventListener("click", function() {getNumber(1)});
       document.getElementById("2").addEventListener("click", function() {getNumber(2)});
       document.getElementById("3").addEventListener("click", function() {getNumber(3)});
@@ -106,146 +259,9 @@
       document.getElementById("changeSign").addEventListener("click", function() {changeSign()});
       document.getElementById("decimal").addEventListener("click", function() {decimal()});
       document.getElementById("equals").addEventListener("click", function() {equals()});
-      function getNumber(number) {
-        if (digit.length < 8) {
-          if (numCheck==1) {
-            digit.splice(digit.length,0, number)
-            document.getElementById("screen").innerHTML = digit.join('')
-            console.log("the current numer is " +digit)
-            console.log("the stored value is " + storage)
-          }
-          else {
-           
-            numCheck=1
-            digit.splice(0,digit.length, number)
-            document.getElementById("screen").innerHTML = digit.join('') 
-          }
-        }
-        else {
-          console.log("maximum number of digits on screen")
-        }
-      }
-      
-      function clearAll(){
-        console.log('everything was cleared.')
-        digit.splice(0,digit.length,0)
-        document.getElementById("screen").innerHTML = digit.join('')
-        signCheck = 0
-        storage   = 0
-        numCheck  = 0
-      }
-      function squareRoot(){
-       var value = parseFloat(digit.join('')**0.5)
-       var val   = value.toFixed(2)
-        
-        document.getElementById("screen").innerHTML = val
-        digit.splice(0,digit.length, val)
-        numCheck=0
-      }
-      function changeSign(){
-        storage = parseFloat((digit.join(''))*-1)
-        digit.splice(0, digit.length, storage)
-        document.getElementById("screen").innerHTML = storage
-      }
-      function decimal(){
-    
-        
-      }
-      //Operators function based on the value of signCheck. 1=add, 2=subtract, 3=divide, 4=multiply
-      function multiplier() {
-        if (signCheck<1) {
-            storage = parseFloat(digit.join(''))
-            console.log("the stored value is " + storage)
-            signCheck = 4
-            numCheck  = 0
-          }
-        }
-      
-      function divider() {
-        if (signCheck<1) {
-          storage = parseFloat(digit.join(''))
-          console.log("the stored value is " + storage)
-          signCheck = 3
-          numCheck  = 0
-        }
-        else {
-          equals()
-          signCheck = 3
-          numCheck  = 0
-        }
-      }
-      function subtractor() {
-        if (signCheck<1) {
-          storage = parseFloat(digit.join(''))
-          console.log("the stored value is " + storage)
-          signCheck = 2
-          numCheck  = 0
-        }
-        else {
-          equals()
-          signCheck = 2
-          numCheck  = 0
-        }
-      }
-      function adder() {
-        if (signCheck<1) {
-          signCheck = 1
-          storage = parseFloat(digit.join(''))
-          console.log("the stored value is " + storage)         
-          numCheck  = 0
-        }
-        else {
-          equals()
-          signCheck = 1
-          numCheck  = 0          
-        }
-      }
-      function equals(){
-        var val = parseFloat(digit.join(''))
-        var value   = val
-          if(signCheck==4) {
-           var result = storage * value
-           console.log(storage + " x " + value + " = " + result)           
-           storage    = result
-           console.log ("the stored value is now " + storage)
-          }
-          
-          if(signCheck==3) {
-            if(value!=0){
-            var result = storage / value
-            console.log(storage + " / " + value + " = " + result)          
-            storage    = result
-            console.log ("the stored value is now " + storage)
-            }
-            else{
-              console.log("can't divide by 0!")
-            }
-          }
-          if(signCheck==2) {
-           var result = storage - value
-           console.log(storage + " - " + value + " = " + result)           
-           storage    = result
-           console.log ("the stored value is now " + storage)
-          }
-          if(signCheck==1) {
-           var result = storage + value
-           console.log(storage + " + " + value + " = " + result)
-           storage    = result
-           console.log ("the stored value is now " + storage)
-          }
-        if(result!==undefined){
-          signCheck = 0
-          numCheck  = 0
-          digit.splice(0, digit.length, result)
-          document.getElementById("screen").innerHTML = result.toFixed(2)
-        }
-        else{
-          console.log("undefined.")
-        }
-        
+      console.log("Done")
+    }
 
-      }
-    })();
   </script>
 
 </html>
