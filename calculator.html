@@ -88,8 +88,6 @@
     var numCheck  = 1
     var signCheck = 0
     var storage   = 0
-    var doubleOperator = 0
-
     function getNumber(number) {
       if (digit.length < 8) {
         if (numCheck==1) {
@@ -108,7 +106,6 @@
         console.log("maximum number of digits on screen")
       }
     }
-
     function clearAll(){
       console.log('everything was cleared.')
       digit.splice(0,digit.length,0)
@@ -117,7 +114,6 @@
       storage   = 0
       numCheck  = 0
     }
-
     function squareRoot(){
       var value = parseFloat(digit.join('')**0.5)
       var val   = value.toFixed(2)
@@ -126,17 +122,19 @@
       digit.splice(0,digit.length, val)
       numCheck=0
     }
-
     function changeSign(){
       storage = parseFloat((digit.join(''))*-1)
       digit.splice(0, digit.length, storage)
       document.getElementById("screen").innerHTML = storage
     }
-
     function decimal(){
-      }
-
-
+        if(digit.includes(".")==false){
+          digit.splice(digit.length, 0, "0.")
+        }
+        else{
+          console.log("digit already has a decimal.")
+        }
+     }
     //Operators function based on the value of signCheck. 1=add, 2=subtract, 3=divide, 4=multiply
     function multiplier() {
       if (signCheck<1) {
@@ -146,7 +144,6 @@
         numCheck  = 0
       }
     }
-
     function divider() {
       if (signCheck<1) {
         storage = parseFloat(digit.join(''))
@@ -160,7 +157,6 @@
         numCheck  = 0
       }
     }
-
     function subtractor() {
       if (signCheck<1) {
         storage = parseFloat(digit.join(''))
@@ -174,7 +170,6 @@
         numCheck  = 0
       }
     }
-
     function adder() {
       if (signCheck<1) {
         signCheck = 1
@@ -192,14 +187,12 @@
     function equals(){
       var val = parseFloat(digit.join(''))
       var value   = val
-
       if(signCheck==4) {
         var result = storage * value
         console.log(storage + " x " + value + " = " + result)           
         storage    = result
         console.log ("the stored value is now " + storage)
       }
-
       if(signCheck==3) {
         if(value!=0){
         var result = storage / value
@@ -211,33 +204,28 @@
           console.log("can't divide by 0!")
         }
       }
-
       if(signCheck==2) {
         var result = storage - value
         console.log(storage + " - " + value + " = " + result)
         storage = result
         console.log ("the stored value is now " + storage)
       }
-
       if(signCheck==1) {
         var result = storage + value
         console.log(storage + " + " + value + " = " + result)
         storage    = result
         console.log ("the stored value is now " + storage)
       }
-
       if(result!==undefined){
         signCheck = 0
         numCheck  = 0
         digit.splice(0, digit.length, result)
         document.getElementById("screen").innerHTML = result.toFixed(2)
       }
-
       else{
         console.log("undefined.")
       }
     }
-
     function attach_handlers() {
       console.log("Attaching event listeners...")
       document.getElementById("1").addEventListener("click", function() {getNumber(1)});
@@ -261,7 +249,6 @@
       document.getElementById("equals").addEventListener("click", function() {equals()});
       console.log("Done")
     }
-
   </script>
 
 </html>
