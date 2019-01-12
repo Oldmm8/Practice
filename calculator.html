@@ -88,6 +88,7 @@
     var numCheck  = 1
     var signCheck = 0
     var storage   = 0
+
     function getNumber(number) {
       if (digit.length < 8) {
         if (numCheck==1) {
@@ -129,64 +130,27 @@
     }
     function decimal(){
         if(digit.includes(".")==false){
-          digit.splice(digit.length, 0, "0.")
+          digit.splice(digit.length, 0, ".")
         }
         else{
           console.log("digit already has a decimal.")
         }
      }
     //Operators function based on the value of signCheck. 1=add, 2=subtract, 3=divide, 4=multiply
-    function multiplier() {
-      if (signCheck<1) {
+    function operation(operator) {
+      numCheck  = 0
+      signCheck = operator
+      if (storage){
+        equals(signCheck)
+      }
+      else{
         storage = parseFloat(digit.join(''))
         console.log("the stored value is " + storage)
-        signCheck = 4
-        numCheck  = 0
       }
     }
-    function divider() {
-      if (signCheck<1) {
-        storage = parseFloat(digit.join(''))
-        console.log("the stored value is " + storage)
-        signCheck = 3
-        numCheck  = 0
-      }
-      else {
-        equals()
-        signCheck = 3
-        numCheck  = 0
-      }
-    }
-    function subtractor() {
-      if (signCheck<1) {
-        storage = parseFloat(digit.join(''))
-        console.log("the stored value is " + storage)
-        signCheck = 2
-        numCheck  = 0
-      }
-      else {
-        equals()
-        signCheck = 2
-        numCheck  = 0
-      }
-    }
-    function adder() {
-      if (signCheck<1) {
-        signCheck = 1
-        storage = parseFloat(digit.join(''))
-        console.log("the stored value is " + storage)
-        numCheck  = 0
-      }
-      else {
-        equals()
-        signCheck = 1
-        numCheck  = 0
-      }
-    }
-
+   
     function equals(){
-      var val = parseFloat(digit.join(''))
-      var value = val
+      var value = parseFloat(digit.join(''))
       var result = null;
       switch(signCheck) {
         case 4:
@@ -204,6 +168,7 @@
           }
           else{
             console.log("can't divide by 0!")
+            clearAll()
           }
           break;
         case 2:
@@ -245,10 +210,10 @@
       document.getElementById("0").addEventListener("click", function() {getNumber(0)});
       document.getElementById("clearAll").addEventListener("click", function() {clearAll()});
       document.getElementById("root").addEventListener("click", function() {squareRoot()});
-      document.getElementById("times").addEventListener("click", function() {multiplier()});
-      document.getElementById("divide").addEventListener("click", function() {divider()});
-      document.getElementById("minus").addEventListener("click", function() {subtractor()});
-      document.getElementById("plus").addEventListener("click", function() {adder()});
+      document.getElementById("times").addEventListener("click", function() {operation(4)});
+      document.getElementById("divide").addEventListener("click", function() {operation(3)});
+      document.getElementById("minus").addEventListener("click", function() {operation(2)});
+      document.getElementById("plus").addEventListener("click", function() {operation(1)});
       document.getElementById("changeSign").addEventListener("click", function() {changeSign()});
       document.getElementById("decimal").addEventListener("click", function() {decimal()});
       document.getElementById("equals").addEventListener("click", function() {equals()});
