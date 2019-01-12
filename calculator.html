@@ -183,40 +183,45 @@
         numCheck  = 0
       }
     }
-      
+
     function equals(){
       var val = parseFloat(digit.join(''))
-      var value   = val
-      if(signCheck==4) {
-        var result = storage * value
-        console.log(storage + " x " + value + " = " + result)           
-        storage    = result
-        console.log ("the stored value is now " + storage)
+      var value = val
+      var result = null;
+      switch(signCheck) {
+        case 4:
+          result = storage * value
+          console.log(storage + " x " + value + " = " + result)           
+          storage    = result
+          console.log ("the stored value is now " + storage)
+          break;
+        case 3:
+          if(value!=0){
+          result = storage / value
+          console.log(storage + " / " + value + " = " + result)          
+          storage    = result
+          console.log ("the stored value is now " + storage)
+          }
+          else{
+            console.log("can't divide by 0!")
+          }
+          break;
+        case 2:
+          result = storage - value
+          console.log(storage + " - " + value + " = " + result)
+          storage = result
+          console.log ("the stored value is now " + storage)
+          break;
+        case 1:
+          result = storage + value
+          console.log(storage + " + " + value + " = " + result)
+          storage    = result
+          console.log ("the stored value is now " + storage)
+          break;
+        default:
+          console.log("No operation or an unknown operation was requested")
       }
-      if(signCheck==3) {
-        if(value!=0){
-        var result = storage / value
-        console.log(storage + " / " + value + " = " + result)          
-        storage    = result
-        console.log ("the stored value is now " + storage)
-        }
-        else{
-          console.log("can't divide by 0!")
-        }
-      }
-      if(signCheck==2) {
-        var result = storage - value
-        console.log(storage + " - " + value + " = " + result)
-        storage = result
-        console.log ("the stored value is now " + storage)
-      }
-      if(signCheck==1) {
-        var result = storage + value
-        console.log(storage + " + " + value + " = " + result)
-        storage    = result
-        console.log ("the stored value is now " + storage)
-      }
-      if(result!==undefined){
+      if(result){
         signCheck = 0
         numCheck  = 0
         digit.splice(0, digit.length, result)
